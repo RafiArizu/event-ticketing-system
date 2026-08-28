@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->foreignId('vendor_id')->unique()->constrained('vendor_profiles')->cascadeOnDelete();
-            $table->foreignId('category_id')->unique()->constrained('cotegories')->cascadeOnDelete();
+            $table->foreignId('category_id')->unique()->constrained('categories')->cascadeOnDelete();
             $table->string('tittle');
             $table->string('slug')->unique();
             $table->text('description');

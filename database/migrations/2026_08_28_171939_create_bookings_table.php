@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookings_', function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
-            $table->string('booking_code');
+            $table->string('booking_code', 50);
             $table->decimal('total_amount');
             $table->enum('status', ['pending','confirmed','cancelled','completed'])->default('pending');
             $table->enum('payment_status', ['unpaid','paid','failed','refunded'])->default('unpaid');
