@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>ini halaman login customer</h1>
+    
 </body>
 </html>
