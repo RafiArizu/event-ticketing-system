@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>ini halaman register</h1>
+    <h1>ini halaman register vendor</h1>
 </body>
 </html>
