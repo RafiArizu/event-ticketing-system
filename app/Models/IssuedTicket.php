@@ -16,6 +16,7 @@ class IssuedTicket extends Model
         'ticket_code',
         'qr_code',
         'status',
+        'used_at',
     ];
 
     protected function casts(): array
