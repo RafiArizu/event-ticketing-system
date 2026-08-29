@@ -20,7 +20,6 @@ return new class extends Migration
             $table->enum('payment_status', ['unpaid','paid','failed','refunded'])->default('unpaid');
             $table->dateTime('booked_at');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

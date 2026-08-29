@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('booking_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('booking_id')->unique()->constrained('bookings')->cascadeOnDelete();
-            $table->foreignId('tickets_id')->unique()->constrained('tickets')->cascadeOnDelete();
+            $table->foreignId('ticket_id')->unique()->constrained('tickets')->cascadeOnDelete();
             $table->integer('quantity');
             $table->decimal('price');
             $table->decimal('subtotal');

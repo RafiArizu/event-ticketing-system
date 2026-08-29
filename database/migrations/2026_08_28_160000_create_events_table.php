@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vendor_id')->unique()->constrained('vendor_profiles')->cascadeOnDelete();
             $table->foreignId('category_id')->unique()->constrained('categories')->cascadeOnDelete();
-            $table->string('tittle');
+            $table->string('title');
             $table->string('slug')->unique();
             $table->text('description');
             $table->string('poster');
