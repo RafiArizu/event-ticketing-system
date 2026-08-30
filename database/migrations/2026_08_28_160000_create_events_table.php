@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('vendor_id')->unique()->constrained('vendor_profiles')->cascadeOnDelete();
+            $table->foreignId('vendor_id')->unique()->constrained('vendor')->cascadeOnDelete();
             $table->foreignId('category_id')->unique()->constrained('categories')->cascadeOnDelete();
             $table->string('title');
             $table->string('slug')->unique();
