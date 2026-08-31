@@ -1,0 +1,5 @@
+@extends('admin.layouts.app')
+@section('content')
+<div class="topbar"><div><p class="eyebrow">Attendance</p><h1>Issued tickets</h1><p class="lede">Audit ticket individual yang sudah diterbitkan dan digunakan.</p></div></div>
+<section class="panel section"><div class="panel-head"><h2>Issued ticket log</h2></div>@if(isset($issuedTickets) && $issuedTickets->count())<div class="table-wrap"><table class="table"><thead><tr><th>Ticket code</th><th>Booking</th><th>Status</th><th>Used at</th></tr></thead><tbody>@foreach($issuedTickets as $issuedTicket)<tr><td class="mono">{{ $issuedTicket->ticket_code }}</td><td>{{ $issuedTicket->bookingItem->booking->booking_code ?? '—' }}</td><td><span class="badge {{ $issuedTicket->status === 'active' ? 'success' : ($issuedTicket->status === 'cancelled' ? 'error' : 'neutral') }}">{{ ucfirst($issuedTicket->status) }}</span></td><td>{{ optional($issuedTicket->used_at)->format('d M Y, H:i') ?? '—' }}</td></tr>@endforeach</tbody></table></div>@else<div class="empty"><strong>Belum ada issued ticket.</strong><span>Ticket individual akan muncul setelah pembayaran berhasil.</span></div>@endif</section>
+@endsection

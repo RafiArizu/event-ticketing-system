@@ -1,0 +1,5 @@
+@extends('admin.layouts.app')
+@section('content')
+<div class="topbar"><div><p class="eyebrow">Transactions</p><h1>Bookings</h1><p class="lede">Monitor status booking dan pembayaran customer.</p></div></div>
+<section class="panel section"><div class="panel-head"><h2>Recent bookings</h2></div>@if(isset($bookings) && $bookings->count())<div class="table-wrap"><table class="table"><thead><tr><th>Booking code</th><th>Customer</th><th>Total</th><th>Payment</th><th>Status</th></tr></thead><tbody>@foreach($bookings as $booking)<tr><td class="mono">{{ $booking->booking_code }}</td><td>{{ $booking->user->name ?? '—' }}</td><td>Rp {{ number_format($booking->total_amount, 0, ',', '.') }}</td><td><span class="badge {{ $booking->payment_status === 'paid' ? 'success' : 'warning' }}">{{ ucfirst($booking->payment_status) }}</span></td><td>{{ ucfirst($booking->status) }}</td></tr>@endforeach</tbody></table></div>@else<div class="empty"><strong>Belum ada booking.</strong><span>Transaksi customer akan muncul setelah booking dibuat.</span></div>@endif</section>
+@endsection

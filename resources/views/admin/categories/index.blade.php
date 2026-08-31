@@ -1,0 +1,5 @@
+@extends('admin.layouts.app')
+@section('content')
+<div class="topbar"><div><p class="eyebrow">Taxonomy</p><h1>Categories</h1><p class="lede">Kelola kategori yang dipakai untuk mengelompokkan event.</p></div><a class="button" href="{{ url('/admin/categories/create') }}">Tambah kategori</a></div>
+<section class="panel section"><div class="panel-head"><h2>Semua kategori</h2><span class="badge neutral">{{ isset($categories) ? $categories->count() : 0 }} kategori</span></div>@if(isset($categories) && $categories->count())<div class="table-wrap"><table class="table"><thead><tr><th>Nama</th><th>Slug</th><th>Event</th><th></th></tr></thead><tbody>@foreach($categories as $category)<tr><td><strong>{{ $category->name }}</strong></td><td class="mono">{{ $category->slug }}</td><td>{{ $category->events_count ?? $category->events->count() }}</td><td><a class="button secondary" href="{{ url('/admin/categories/'.$category->id) }}">Lihat</a></td></tr>@endforeach</tbody></table></div>@else<div class="empty"><strong>Belum ada kategori.</strong><span>Buat kategori pertama untuk mulai mengelompokkan event.</span></div>@endif</section>
+@endsection

@@ -1,0 +1,5 @@
+@extends('admin.layouts.app')
+@section('content')
+<div class="topbar"><div><p class="eyebrow">Inventory</p><h1>Tickets</h1><p class="lede">Pantau harga, quota, dan penjualan ticket dari semua event.</p></div></div>
+<section class="panel section"><div class="panel-head"><h2>Ticket inventory</h2></div>@if(isset($tickets) && $tickets->count())<div class="table-wrap"><table class="table"><thead><tr><th>Ticket</th><th>Event</th><th>Price</th><th>Sold / quota</th><th>Sales</th></tr></thead><tbody>@foreach($tickets as $ticket)<tr><td><strong>{{ $ticket->name }}</strong></td><td>{{ $ticket->ticketCategory->event->title ?? '—' }}</td><td>Rp {{ number_format($ticket->price, 0, ',', '.') }}</td><td class="mono">{{ $ticket->sold }} / {{ $ticket->quota }}</td><td><span class="badge {{ now()->between($ticket->sales_start, $ticket->sales_end) ? 'success' : 'neutral' }}">{{ now()->between($ticket->sales_start, $ticket->sales_end) ? 'Open' : 'Closed' }}</span></td></tr>@endforeach</tbody></table></div>@else<div class="empty"><strong>Inventory ticket kosong.</strong><span>Ticket dari event vendor akan tampil di sini.</span></div>@endif</section>
+@endsection

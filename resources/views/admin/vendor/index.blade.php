@@ -1,0 +1,5 @@
+@extends('admin.layouts.app')
+@section('content')
+<div class="topbar"><div><p class="eyebrow">Partner review</p><h1>Vendors</h1><p class="lede">Tinjau profil vendor dan status persetujuannya.</p></div></div>
+<section class="panel section"><div class="panel-head"><h2>Vendor applications</h2><span class="badge warning">Pending review</span></div>@if(isset($vendors) && $vendors->count())<div class="table-wrap"><table class="table"><thead><tr><th>Organisasi</th><th>Kontak</th><th>Status</th><th></th></tr></thead><tbody>@foreach($vendors as $vendor)<tr><td><strong>{{ $vendor->organization_name }}</strong></td><td>{{ $vendor->phone ?? '—' }}</td><td><span class="badge {{ $vendor->status === 'approved' ? 'success' : ($vendor->status === 'rejected' ? 'error' : 'warning') }}">{{ ucfirst($vendor->status) }}</span></td><td><a class="button secondary" href="#">Review</a></td></tr>@endforeach</tbody></table></div>@else<div class="empty"><strong>Antrian vendor kosong.</strong><span>Vendor baru akan muncul setelah mengajukan profil.</span></div>@endif</section>
+@endsection
