@@ -4,8 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Vendor;
-use App\Models\VendorProfile;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,10 +13,12 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
+
+    use WithoutModelEvents;
+
     public function run(): void
     {
         // User::factory(10)->create();
-
         // User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
@@ -55,27 +56,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // ─── Vendor Pending ke 2 ────────────────────────────────────────────────
-        $userPending = User::firstOrCreate(
-            ['email' => 'admin@yorustage.id'],
-            [
-                'name'     => 'vendor pending',
-                'password' => Hash::make('password321'),
-                'role'     => 'vendor',
-            ]
-        );
-
-        Vendor::firstOrCreate(
-            ['user_id' => $userPending->id],
-            [
-                'organization_name' => 'Yoru Stageworks',
-                'description'       => 'Tim produksi pertunjukan panggung dan acara komunitas pop culture.',
-                'phone'             => '085790124460',
-                'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan',
-                'status'            => 'pending',
-            ]
-        );
-
 
         // ─── 2. Vendor Approved  ────────────────────────────────────────────────
         $userApproved = User::firstOrCreate(
@@ -87,21 +67,41 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        Vendor::firstOrCreate(
-            ['user_id' => $userPending->id],
+       $vendorApproved = Vendor::firstOrCreate(
+            ['user_id' => $userApproved->id],
             [
                 'organization_name' => 'kitsune-market',
                 'description'       => 'Studio kreatif untuk event komunitas anime, ilustrasi, dan pop culture lokal.',
                 'phone'             => '081273401182',
                 'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan',
-                'status'            => 'pending',
+                'status'      => 'approved',
+                'instagram'   => '@kitsune_market_official',
+                'reviewed_by' => $admin->id,
+                'reviewed_at' => now()->subDays(5),
             ]
         );
 
 
+        // ─── Vendor Pending ke 2 ────────────────────────────────────────────────
+        // $userPending = User::firstOrCreate(
+        //     ['email' => 'admin@yorustage.id'],
+        //     [
+        //         'name'     => 'vendor pending',
+        //         'password' => Hash::make('password321'),
+        //         'role'     => 'vendor',
+        //     ]
+        // );
 
+        // Vendor::firstOrCreate(
+        //     ['user_id' => $userPending->id],
+        //     [
+        //         'organization_name' => 'Yoru Stageworks',
+        //         'description'       => 'Tim produksi pertunjukan panggung dan acara komunitas pop culture.',
+        //         'phone'             => '085790124460',
+        //         'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan',
+        //         'status'            => 'pending',
+        //     ]
+        // );
 
-
-        
     }
 }
