@@ -12,9 +12,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
             $table->string('organization_name');
-            $table->text('description')->nullable();
-            $table->string('phone', 20)->nullable();
-            $table->text('address')->nullable();
+            $table->text('description');
+            $table->string('phone', 20);
+            $table->text('address');
+            $table->string('instagram')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('x_(twitter)')->nullable();
             $table->string('logo')->nullable();
             $table->enum('status', ['pending','approved','rejected'])->default('pending');
             $table->timestamps();
@@ -24,6 +27,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('vendor_profiles');
+        Schema::dropIfExists('vendor');
     }
 };
