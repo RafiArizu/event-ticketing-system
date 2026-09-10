@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Vendor;
 use App\Models\VendorProfile;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -43,7 +44,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        VendorProfile::firstOrCreate(
+        Vendor::firstOrCreate(
             ['user_id' => $userPending->id],
             [
                 'organization_name' => 'Neko Neko Studio',
@@ -64,7 +65,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        VendorProfile::firstOrCreate(
+        Vendor::firstOrCreate(
             ['user_id' => $userPending->id],
             [
                 'organization_name' => 'Yoru Stageworks',
@@ -86,7 +87,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        VendorProfile::firstOrCreate(
+        Vendor::firstOrCreate(
             ['user_id' => $userPending->id],
             [
                 'organization_name' => 'kitsune-market',
@@ -99,9 +100,8 @@ class DatabaseSeeder extends Seeder
 
 
 
+
+
+        
     }
-
-    
-
-
 }

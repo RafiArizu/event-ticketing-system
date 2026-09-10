@@ -1,15 +1,39 @@
 <?php
 
 use App\Http\Controllers\Admin\Auth\AdminLoginController;
+use App\Http\Controllers\Customer\CustomerLoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('admin.dashboard.index');
+    return view('admin.auth.login');
 });
 
-Route::view('/customer/home', 'customer.home.index')->name('customer.home');
 
-Route::view('/admin/auth', 'admin.Auth.login')->name('admin.login');
+
+// ------ Routes Admin -------   
+
+Route::view('/admin/auth', 'admin.auth.login')->name('admin.auth.login');
+
+Route::redirect('/login', '/admin/login')->name('login');
+
+Route::prefix('admin')->name('admin.')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [AdminLoginController::class, 'showLogin'])
+            ->name('login');
+
+        Route::post('/login', [AdminLoginController::class, 'login'])
+            ->name('login.store');
+    });
+
+    Route::middleware(['auth', 'role:admin'])->group(function () {
+        Route::view('/dashboard', 'admin.dashboard.index')
+            ->name('dashboard');
+
+        Route::post('/logout', [AdminLoginController::class, 'logout'])
+            ->name('logout');
+    });
+});
+
 
 Route::view('/admin/dashboard', 'admin.dashboard.index')->name('admin.dashboard');
 
@@ -46,6 +70,8 @@ Route::get('/admin/bookings', function (\Illuminate\Http\Request $request) {
         logger()->notice('Admin booking cancellation requested', ['booking' => $booking, 'admin_id' => $request->user()->id, 'reason' => $request->string('reason')->toString(), 'at' => now()->toIso8601String()]);
         return redirect()->route('admin.bookings.show', $booking)->with('status', 'Permintaan cancel tercatat di audit log. Status akan diproses sesuai kebijakan pembayaran.');
     })->name('admin.bookings.cancel');
+
+
 
 Route::middleware('guest')->group(function () {
     // Route::get('register', [RegisteredUserController::class, 'create'])
@@ -152,6 +178,22 @@ Route::get('/admin/vendors/{vendor}', function (string $vendor) {
 
         return view('dashb.vendor.show', ['vendor' => $vendors[$vendor]]);
 })->name('admin.vendors.show');
+
+
+// ------ Routes Customer -------    
+Route::prefix('customer')->name('customer.')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [CustomerLoginController::class, 'createLogin'])->name('login');
+        Route::post('/login', [CustomerLoginController::class, 'login'])->name('login.store');
+        Route::get('/register', [CustomerLoginController::class, 'createRegister'])->name('register');
+        Route::post('/register', [CustomerLoginController::class, 'register'])->name('register.store');
+    });
+
+    Route::middleware(['auth', 'role:customer'])->group(function () {
+        Route::view('/home', 'customer.home.index')->name('home');
+        Route::post('/logout', [CustomerLoginController::class, 'logout'])->name('logout');
+    });
+});
 
 // Preview routes: these expose the Blade UI directly until auth/controllers are wired.
 // Route::prefix('admin')->name('admin.')->group(function () {
