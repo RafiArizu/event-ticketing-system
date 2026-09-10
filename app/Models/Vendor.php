@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class VendorProfile extends Model
+class Vendor extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -16,6 +16,9 @@ class VendorProfile extends Model
         'description',
         'phone',
         'address',
+        'instagram',
+        'facebook',
+        'x_(twitter)',
         'logo',
         'status',
     ];

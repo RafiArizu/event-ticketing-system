@@ -1,0 +1,5 @@
+@extends('customer.layouts.app')
+@section('content')
+<section class="hero"><div class="eyebrow">Find your next scene</div><h1>Good events,<br>better memories.</h1><p class="muted">Discover anime festivals, cosplay competitions, music, and workshops around you.</p><form class="search"><input type="search" placeholder="Search events, city, or category"><button class="button">Search</button></form></section>
+<section class="section"><p class="eyebrow">Curated for you</p><h2>Events worth showing up for</h2><div class="events"><article class="event"><div class="cover">JAE 2026</div><div class="event-body"><h3>Jakarta Anime Expo</h3><small>12 Sep 2026 · Jakarta</small></div></article><article class="event"><div class="cover" style="background:#f7d8ce;color:#bc5b42">COSPLAY</div><div class="event-body"><h3>Cosplay Weekend</h3><small>04 Oct 2026 · Jakarta</small></div></article><article class="event"><div class="cover" style="background:#d9eadf;color:#397048">MUSIC</div><div class="event-body"><h3>Anime Soundtrack Night</h3><small>21 Nov 2026 · Bandung</small></div></article></div></section>
+@endsection
