@@ -59,7 +59,7 @@
                     <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-end">
                         <form method="POST" action="{{ route('admin.vendors.reject', $vendor) }}" class="space-y-3">
                             @csrf
-                            <label for="rejection_reason" class="block text-sm font-semibold">Alasan penolakan <span class="font-normal text-[#756861]">(opsional)</span></label>
+                            <label for="rejection_reason" class="block text-sm font-semibold">Alasan penolakan * <span class="font-normal text-[#756861]">(wajib)</span></label>
                             <textarea id="rejection_reason" name="rejection_reason" rows="3" required minlength="10" maxlength="500" class="w-full rounded-[5px] border border-[#eadfd6] bg-[#fff9f3] px-4 py-3 text-sm focus:border-[#f4511e] focus:ring-0" placeholder="Tulis alasan penolakan (minimal 10 karakter)">{{ old('rejection_reason') }}</textarea>
                             @error('rejection_reason')
                                 <p class="text-sm text-[#b33d38]">{{ $message }}</p>

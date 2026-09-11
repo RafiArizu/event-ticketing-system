@@ -104,53 +104,79 @@ class DatabaseSeeder extends Seeder
                 'status'            => 'pending',
                 'instagram'         => '@Yoru_Night_Stage.Comunity',
                 'facebook'          => '@YNS_YoruNightStage.Comunity',
-                'x_twitter'         => '@Yoru_Night_Stage.Comunity',
-                'reviewed_by'       => $admin->id,
-                'reviewed_at'       => now()->subDays(5),
+                'x_(twitter)'       => '@Yoru_Night_Stage.Comunity',
             ]
         );
 
-        // Vendor tambahan: 5 pending, 5 approved.
-        $additionalVendors = [
-            ['name' => 'vendor pending 01', 'email' => 'sora@cosplaycorner.id', 'organization' => 'Sora Cosplay Corner', 'status' => 'pending', 'instagram' => '@soracosplaycorner'],
-            ['name' => 'vendor pending 02', 'email' => 'hello@otakugoods.id', 'organization' => 'Otaku Goods Collective', 'status' => 'pending', 'instagram' => null],
-            ['name' => 'vendor pending 03', 'email' => 'contact@harajukucraft.id', 'organization' => 'Harajuku Craft Hall', 'status' => 'pending', 'instagram' => '@harajukucrafthall'],
-            ['name' => 'vendor pending 04', 'email' => 'admin@mechamarket.id', 'organization' => 'Mecha Market Depok', 'status' => 'pending', 'instagram' => null],
-            ['name' => 'vendor pending 05', 'email' => 'team@moondropstudio.id', 'organization' => 'MoonDrop Studio', 'status' => 'pending', 'instagram' => '@moondropstudio'],
-            ['name' => 'vendor approved 01', 'email' => 'hello@komorebuevents.id', 'organization' => 'Komorebu Events', 'status' => 'approved', 'instagram' => '@komorebuevents'],
-            ['name' => 'vendor approved 02', 'email' => 'admin@pixelparade.id', 'organization' => 'Pixel Parade Works', 'status' => 'approved', 'instagram' => '@pixelparadeworks'],
-            ['name' => 'vendor approved 03', 'email' => 'studio@akibaframe.id', 'organization' => 'Akiba Frame Studio', 'status' => 'approved', 'instagram' => null],
-            ['name' => 'vendor approved 04', 'email' => 'halo@tokusatsuhub.id', 'organization' => 'Tokusatsu Hub', 'status' => 'approved', 'instagram' => '@tokusatsuhub'],
-            ['name' => 'vendor approved 05', 'email' => 'crew@starlightcos.id', 'organization' => 'Starlight Cosplay Crew', 'status' => 'approved', 'instagram' => '@starlightcos'],
-        ];
+        // ─── Vendor Approved ke 2 ────────────────────────────────────────────────
+        $userApprovedTwo = User::firstOrCreate(
+            ['email' => 'hello@komorebuevents.id'],
+            [
+                'name'     => 'vendor approved 2',
+                'password' => Hash::make('password987'),
+                'role'     => 'vendor',
+            ]
+        );
 
-        foreach ($additionalVendors as $index => $vendorData) {
-            $user = User::updateOrCreate(
-                ['email' => $vendorData['email']],
-                [
-                    'name' => $vendorData['name'],
-                    'password' => Hash::make('password123'),
-                    'role' => 'vendor',
-                ]
-            );
+        Vendor::firstOrCreate(
+            ['user_id' => $userApprovedTwo->id],
+            [
+                'organization_name' => 'Komorebu Events',
+                'description'       => 'Penyelenggara event anime dan pop culture untuk komunitas lokal.',
+                'phone'             => '081298765432',
+                'address'           => 'Jl. Melati No. 12, Jakarta Selatan.',
+                'status'            => 'approved',
+                'instagram'         => '@komorebuevents',
+                'reviewed_by'       => $admin->id,
+                'reviewed_at'       => now()->subDays(4),
+            ]
+        );
 
-            $reviewData = $vendorData['status'] === 'approved'
-                ? ['reviewed_by' => $admin->id, 'reviewed_at' => now()->subDays(3)]
-                : ['reviewed_by' => null, 'reviewed_at' => null];
+        // ─── Vendor Approved ke 3 ────────────────────────────────────────────────
+        $userApprovedThree = User::firstOrCreate(
+            ['email' => 'admin@pixelparade.id'],
+            [
+                'name'     => 'vendor approved 3',
+                'password' => Hash::make('password987'),
+                'role'     => 'vendor',
+            ]
+        );
 
-            Vendor::updateOrCreate(
-                ['user_id' => $user->id],
-                array_merge([
-                    'organization_name' => $vendorData['organization'],
-                    'description' => 'Penyelenggara event anime dan pop culture untuk komunitas lokal.',
-                    'phone' => '0812' . str_pad((string) ($index + 10000001), 8, '0', STR_PAD_LEFT),
-                    'address' => 'Jl. Komunitas Kreatif No. ' . ($index + 1) . ', Jakarta.',
-                    'instagram' => $vendorData['instagram'],
-                    'status' => $vendorData['status'],
-                    'rejection_reason' => null,
-                ], $reviewData)
-            );
-        }
+        Vendor::firstOrCreate(
+            ['user_id' => $userApprovedThree->id],
+            [
+                'organization_name' => 'Pixel Parade Works',
+                'description'       => 'Studio kreatif untuk event komunitas anime dan pop culture.',
+                'phone'             => '081287654321',
+                'address'           => 'Jl. Kenanga No. 7, Bandung.',
+                'status'            => 'approved',
+                'instagram'         => '@pixelparadeworks',
+                'reviewed_by'       => $admin->id,
+                'reviewed_at'       => now()->subDays(2),
+            ]
+        );
+
+        // ─── Vendor Pending ke 3 ────────────────────────────────────────────────
+        $userPendingThree = User::firstOrCreate(
+            ['email' => 'hello@otakugoods.id'],
+            [
+                'name'     => 'vendor pending 3',
+                'password' => Hash::make('password321'),
+                'role'     => 'vendor',
+            ]
+        );
+
+        Vendor::firstOrCreate(
+            ['user_id' => $userPendingThree->id],
+            [
+                'organization_name' => 'Otaku Goods Collective',
+                'description'       => 'Kolektif merchandise anime dan pop culture untuk komunitas lokal.',
+                'phone'             => '081276543210',
+                'address'           => 'Jl. Sakura No. 15, Depok.',
+                'status'            => 'pending',
+                'instagram'         => '@otakugoodscollective',
+            ]
+        );
 
     }
 }
