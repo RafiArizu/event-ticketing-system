@@ -74,10 +74,10 @@ class DatabaseSeeder extends Seeder
                 'description'       => 'Studio kreatif untuk event komunitas anime, ilustrasi, dan pop culture lokal.',
                 'phone'             => '081273401182',
                 'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan',
-                'status'      => 'approved',
-                'instagram'   => '@kitsune_market_official',
-                'reviewed_by' => $admin->id,
-                'reviewed_at' => now()->subDays(5),
+                'status'            => 'approved',
+                'instagram'         => '@kitsune_market_official',
+                'reviewed_by'       => $admin->id,
+                'reviewed_at'       => now()->subDays(5),
             ]
         );
 
