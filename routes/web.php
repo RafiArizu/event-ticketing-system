@@ -156,6 +156,15 @@ Route::get('/admin/events/{event}', function (string $event) {
 Route::get('/admin/vendors', [VendorController::class, 'index'])
     ->name('admin.vendors');
 
+Route::get('/admin/vendors/{vendor}', [VendorController::class, 'show'])
+    ->name('admin.vendors.show');
+
+Route::post('/admin/vendors/{vendor}/approve', [VendorController::class, 'approve'])
+    ->name('admin.vendors.approve');
+
+Route::post('/admin/vendors/{vendor}/reject', [VendorController::class, 'reject'])
+    ->name('admin.vendors.reject');
+
 
 // ------ Routes Customer -------    
 Route::prefix('customer')->name('customer.')->group(function () {

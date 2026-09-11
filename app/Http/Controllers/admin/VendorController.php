@@ -4,9 +4,49 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Vendor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class VendorController
 {
+    public function show(Vendor $vendor)
+    {
+        $vendor->load(['user', 'reviewer']);
+
+        return view('admin.vendors.show', compact('vendor'));
+    }
+
+    public function approve(Vendor $vendor)
+    {
+        abort_unless($vendor->status === 'pending', 422, 'Vendor sudah ditinjau.');
+
+        $vendor->update([
+            'status' => 'approved',
+            'reviewed_by' => Auth::id(),
+            'reviewed_at' => now(),
+            'rejection_reason' => null,
+        ]);
+
+        return redirect()->route('admin.vendors.show', $vendor)->with('status', 'Vendor berhasil disetujui.');
+    }
+
+    public function reject(Request $request, Vendor $vendor)
+    {
+        abort_unless($vendor->status === 'pending', 422, 'Vendor sudah ditinjau.');
+
+        $data = $request->validate([
+            'rejection_reason' => ['nullable', 'string', 'max:500'],
+        ]);
+
+        $vendor->update([
+            'status' => 'rejected',
+            'reviewed_by' => Auth::id(),
+            'reviewed_at' => now(),
+            'rejection_reason' => $data['rejection_reason'] ?? null,
+        ]);
+
+        return redirect()->route('admin.vendors.show', $vendor)->with('status', 'Vendor ditolak.');
+    }
+
     //
     public function index(Request $request)
     {
