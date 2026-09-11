@@ -44,4 +44,10 @@ class Vendor extends Model
     {
         return $this->belongsTo(User::class, 'reviewed_by');
     }
+
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'vendor_id');
+    }
+
 }
