@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\VendorController;
+use App\Http\Controllers\Admin\EventController;
 use App\Http\Controllers\Customer\CustomerLoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,9 +37,29 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 
-Route::view('/admin/dashboard', 'admin.dashboard.index')->name('admin.dashboard');
+Route::view('/admin/dashboard', 'admin.dashboard.index')
+    ->name('admin.dashboard');
+    
 
-Route::view('/admin/events', 'admin.events.index')->name('admin.events');
+Route::get('/admin/events', [EventController::class, 'index'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.events');
+
+Route::get('/admin/events/{event}', [EventController::class, 'show'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.events.show');
+
+Route::get('/admin/vendors', [VendorController::class, 'index'])
+    ->name('admin.vendors');
+
+Route::get('/admin/vendors/{vendor}', [VendorController::class, 'show'])
+    ->name('admin.vendors.show');
+
+Route::post('/admin/vendors/{vendor}/approve', [VendorController::class, 'approve'])
+    ->name('admin.vendors.approve');
+
+Route::post('/admin/vendors/{vendor}/reject', [VendorController::class, 'reject'])
+    ->name('admin.vendors.reject');
 
 Route::get('/admin/bookings', function (\Illuminate\Http\Request $request) {
         $bookings = [
@@ -98,72 +119,6 @@ Route::get('/admin/bookings', function (\Illuminate\Http\Request $request) {
 
     Route::post('logout', [AdminLoginController::class, 'logout'])->name('logout');
 });
-
-Route::get('/admin/events/{event}', function (string $event) {
-        $events = [
-            'otaku-matsuri-2026' => [
-                'code' => 'EV-260928', 'name' => 'Otaku Matsuri 2026', 'category' => 'Anime convention',
-                'date' => '28 September 2026', 'time' => '09:00–21:00 WIB', 'venue' => 'ICE BSD City, Tangerang',
-                'status' => 'Published', 'tickets' => '1.240', 'bookings' => '842',
-                'description' => 'Perayaan komunitas anime dengan panggung utama, artist alley, dan area showcase kreator lokal.',
-            ],
-            'comic-frontier-mini' => [
-                'code' => 'EV-261004', 'name' => 'Comic Frontier Mini', 'category' => 'Pop culture market',
-                'date' => '04 Oktober 2026', 'time' => '10:00–18:00 WIB', 'venue' => 'Hall 3, JIExpo Kemayoran',
-                'status' => 'Draft', 'tickets' => '480', 'bookings' => '176',
-                'description' => 'Pasar kreator skala intim untuk komik, ilustrasi, merchandise, dan komunitas pop culture.',
-            ],
-        ];
-
-        abort_unless(isset($events[$event]), 404);
-
-        return view('dashboard.event.show', ['event' => $events[$event]]);
-    })->name('admin.events.show');
-
-
-    Route::get('/admin/events/{event}/edit', function (string $event) {
-        $events = [
-            'otaku-matsuri-2026' => ['code' => 'EV-260928', 'name' => 'Otaku Matsuri 2026', 'category' => 'Anime convention', 'date' => '2026-09-28', 'time' => '09:00', 'venue' => 'ICE BSD City, Tangerang', 'status' => 'Published', 'description' => 'Perayaan komunitas anime dengan panggung utama, artist alley, dan area showcase kreator lokal.'],
-            'comic-frontier-mini' => ['code' => 'EV-261004', 'name' => 'Comic Frontier Mini', 'category' => 'Pop culture market', 'date' => '2026-10-04', 'time' => '10:00', 'venue' => 'Hall 3, JIExpo Kemayoran', 'status' => 'Draft', 'description' => 'Pasar kreator skala intim untuk komik, ilustrasi, merchandise, dan komunitas pop culture.'],
-        ];
-        abort_unless(isset($events[$event]), 404);
-        return view('dashboard.event.edit', ['event' => $events[$event], 'slug' => $event]);
-    })->name('admin.events.edit');
-
-
-    Route::get('/admin/events/{event}', function (string $event) {
-        $events = [
-            'otaku-matsuri-2026' => [
-                'code' => 'EV-260928', 'name' => 'Otaku Matsuri 2026', 'category' => 'Anime convention',
-                'date' => '28 September 2026', 'time' => '09:00–21:00 WIB', 'venue' => 'ICE BSD City, Tangerang',
-                'status' => 'Published', 'tickets' => '1.240', 'bookings' => '842',
-                'description' => 'Perayaan komunitas anime dengan panggung utama, artist alley, dan area showcase kreator lokal.',
-            ],
-            'comic-frontier-mini' => [
-                'code' => 'EV-261004', 'name' => 'Comic Frontier Mini', 'category' => 'Pop culture market',
-                'date' => '04 Oktober 2026', 'time' => '10:00–18:00 WIB', 'venue' => 'Hall 3, JIExpo Kemayoran',
-                'status' => 'Draft', 'tickets' => '480', 'bookings' => '176',
-                'description' => 'Pasar kreator skala intim untuk komik, ilustrasi, merchandise, dan komunitas pop culture.',
-            ],
-        ];
-
-        abort_unless(isset($events[$event]), 404);
-
-        return view('admin.events.show', ['event' => $events[$event]]);
-})->name('admin.events.show');
-
-
-Route::get('/admin/vendors', [VendorController::class, 'index'])
-    ->name('admin.vendors');
-
-Route::get('/admin/vendors/{vendor}', [VendorController::class, 'show'])
-    ->name('admin.vendors.show');
-
-Route::post('/admin/vendors/{vendor}/approve', [VendorController::class, 'approve'])
-    ->name('admin.vendors.approve');
-
-Route::post('/admin/vendors/{vendor}/reject', [VendorController::class, 'reject'])
-    ->name('admin.vendors.reject');
 
 
 // ------ Routes Customer -------    

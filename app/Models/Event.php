@@ -26,9 +26,23 @@ class Event extends Model
         'status',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'event_date' => 'date',
+            'start_time' => 'datetime:H:i',
+            'end_time' => 'datetime:H:i',
+        ];
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     public function vendor()
     {
-        return $this->belongsTo(User::class, 'vendor_id');
+        return $this->belongsTo(Vendor::class);
     }
 
     public function category()
