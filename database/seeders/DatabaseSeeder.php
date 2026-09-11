@@ -110,5 +110,47 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // Vendor tambahan: 5 pending, 5 approved.
+        $additionalVendors = [
+            ['name' => 'vendor pending 01', 'email' => 'sora@cosplaycorner.id', 'organization' => 'Sora Cosplay Corner', 'status' => 'pending', 'instagram' => '@soracosplaycorner'],
+            ['name' => 'vendor pending 02', 'email' => 'hello@otakugoods.id', 'organization' => 'Otaku Goods Collective', 'status' => 'pending', 'instagram' => null],
+            ['name' => 'vendor pending 03', 'email' => 'contact@harajukucraft.id', 'organization' => 'Harajuku Craft Hall', 'status' => 'pending', 'instagram' => '@harajukucrafthall'],
+            ['name' => 'vendor pending 04', 'email' => 'admin@mechamarket.id', 'organization' => 'Mecha Market Depok', 'status' => 'pending', 'instagram' => null],
+            ['name' => 'vendor pending 05', 'email' => 'team@moondropstudio.id', 'organization' => 'MoonDrop Studio', 'status' => 'pending', 'instagram' => '@moondropstudio'],
+            ['name' => 'vendor approved 01', 'email' => 'hello@komorebuevents.id', 'organization' => 'Komorebu Events', 'status' => 'approved', 'instagram' => '@komorebuevents'],
+            ['name' => 'vendor approved 02', 'email' => 'admin@pixelparade.id', 'organization' => 'Pixel Parade Works', 'status' => 'approved', 'instagram' => '@pixelparadeworks'],
+            ['name' => 'vendor approved 03', 'email' => 'studio@akibaframe.id', 'organization' => 'Akiba Frame Studio', 'status' => 'approved', 'instagram' => null],
+            ['name' => 'vendor approved 04', 'email' => 'halo@tokusatsuhub.id', 'organization' => 'Tokusatsu Hub', 'status' => 'approved', 'instagram' => '@tokusatsuhub'],
+            ['name' => 'vendor approved 05', 'email' => 'crew@starlightcos.id', 'organization' => 'Starlight Cosplay Crew', 'status' => 'approved', 'instagram' => '@starlightcos'],
+        ];
+
+        foreach ($additionalVendors as $index => $vendorData) {
+            $user = User::updateOrCreate(
+                ['email' => $vendorData['email']],
+                [
+                    'name' => $vendorData['name'],
+                    'password' => Hash::make('password123'),
+                    'role' => 'vendor',
+                ]
+            );
+
+            $reviewData = $vendorData['status'] === 'approved'
+                ? ['reviewed_by' => $admin->id, 'reviewed_at' => now()->subDays(3)]
+                : ['reviewed_by' => null, 'reviewed_at' => null];
+
+            Vendor::updateOrCreate(
+                ['user_id' => $user->id],
+                array_merge([
+                    'organization_name' => $vendorData['organization'],
+                    'description' => 'Penyelenggara event anime dan pop culture untuk komunitas lokal.',
+                    'phone' => '0812' . str_pad((string) ($index + 10000001), 8, '0', STR_PAD_LEFT),
+                    'address' => 'Jl. Komunitas Kreatif No. ' . ($index + 1) . ', Jakarta.',
+                    'instagram' => $vendorData['instagram'],
+                    'status' => $vendorData['status'],
+                    'rejection_reason' => null,
+                ], $reviewData)
+            );
+        }
+
     }
 }
