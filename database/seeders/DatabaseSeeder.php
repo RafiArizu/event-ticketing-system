@@ -35,6 +35,8 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        // SECTION AKUN VENDOR //
+
          // ─── Vendor Pending ke 1 ────────────────────────────────────────────────
         $userPending = User::firstOrCreate(
             ['email' => 'hello@nekoneko.id'],
@@ -51,7 +53,7 @@ class DatabaseSeeder extends Seeder
                 'organization_name' => 'Neko Neko Studio',
                 'description'       => 'Studio kreatif untuk event komunitas anime, ilustrasi, dan pop culture lokal.',
                 'phone'             => '081273401182',
-                'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan',
+                'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan, DKI Jakarta.',
                 'status'            => 'pending',
             ]
         );
@@ -73,7 +75,7 @@ class DatabaseSeeder extends Seeder
                 'organization_name' => 'kitsune-market',
                 'description'       => 'Studio kreatif untuk event komunitas anime, ilustrasi, dan pop culture lokal.',
                 'phone'             => '081273401182',
-                'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan',
+                'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan, DKI Jakarta.',
                 'status'            => 'approved',
                 'instagram'         => '@kitsune_market_official',
                 'reviewed_by'       => $admin->id,
@@ -83,25 +85,30 @@ class DatabaseSeeder extends Seeder
 
 
         // ─── Vendor Pending ke 2 ────────────────────────────────────────────────
-        // $userPending = User::firstOrCreate(
-        //     ['email' => 'admin@yorustage.id'],
-        //     [
-        //         'name'     => 'vendor pending',
-        //         'password' => Hash::make('password321'),
-        //         'role'     => 'vendor',
-        //     ]
-        // );
+        $userPending = User::firstOrCreate(
+            ['email' => 'admin@yorustage.id'],
+            [
+                'name'     => 'vendor pending',
+                'password' => Hash::make('password321'),
+                'role'     => 'vendor',
+            ]
+        );
 
-        // Vendor::firstOrCreate(
-        //     ['user_id' => $userPending->id],
-        //     [
-        //         'organization_name' => 'Yoru Stageworks',
-        //         'description'       => 'Tim produksi pertunjukan panggung dan acara komunitas pop culture.',
-        //         'phone'             => '085790124460',
-        //         'address'           => 'Jl. Kemang Raya 18, Jakarta Selatan',
-        //         'status'            => 'pending',
-        //     ]
-        // );
+        Vendor::firstOrCreate(
+            ['user_id' => $userPending->id],
+            [
+                'organization_name' => 'Yoru Night Stageworks',
+                'description'       => 'Tim produksi pertunjukan panggung dan acara komunitas pop culture.',
+                'phone'             => '085790124460',
+                'address'           => 'Jl. Jendral Soedirman 09, Bekasi, JawaBarat.',
+                'status'            => 'pending',
+                'instagram'         => '@Yoru_Night_Stage.Comunity',
+                'facebook'          => '@YNS_YoruNightStage.Comunity',
+                'x_twitter'         => '@Yoru_Night_Stage.Comunity',
+                'reviewed_by'       => $admin->id,
+                'reviewed_at'       => now()->subDays(5),
+            ]
+        );
 
     }
 }

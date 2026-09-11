@@ -34,14 +34,19 @@ class VendorController
         abort_unless($vendor->status === 'pending', 422, 'Vendor sudah ditinjau.');
 
         $data = $request->validate([
-            'rejection_reason' => ['nullable', 'string', 'max:500'],
+            'rejection_reason' => [
+                'required',
+                'string',
+                'min:10',
+                'max:500',
+            ],
         ]);
 
         $vendor->update([
             'status' => 'rejected',
             'reviewed_by' => Auth::id(),
             'reviewed_at' => now(),
-            'rejection_reason' => $data['rejection_reason'] ?? null,
+            'rejection_reason' => $data['rejection_reason'],
         ]);
 
         return redirect()->route('admin.vendors.show', $vendor)->with('status', 'Vendor ditolak.');
