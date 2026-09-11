@@ -54,7 +54,7 @@
             @endif
 
             @if ($vendor->status === 'pending')
-                <section class="mt-8 border border-[#eadfd6] bg-white p-5 sm:p-6" aria-label="Tindakan vendor">
+                <section class="mt-1 border border-[#eadfd6] bg-white p-5 sm:p-6" aria-label="Tindakan vendor">
                     <div class="mb-5 flex flex-col gap-1 border-b border-[#eadfd6] pb-4"><p class="font-mono text-[10px] font-semibold uppercase tracking-[.16em] text-[#f4511e]">Keputusan review</p><h2 class="font-['Outfit'] text-2xl font-bold">Tentukan status vendor</h2><p class="text-sm text-[#756861]">Periksa data di atas sebelum memberikan keputusan.</p></div>
                     <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-end">
                         <form method="POST" action="{{ route('admin.vendors.reject', $vendor) }}" class="space-y-3">
