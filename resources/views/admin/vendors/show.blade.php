@@ -34,7 +34,7 @@
                         <div class="grid gap-1 px-5 py-4 sm:grid-cols-[150px_1fr]"><dt class="text-[#756861]">Deskripsi</dt><dd class="leading-6">{{ $vendor->description ?: 'Belum ada deskripsi.' }}</dd></div>
                         <div class="grid gap-1 px-5 py-4 sm:grid-cols-[150px_1fr]"><dt class="text-[#756861]">Alamat</dt><dd>{{ $vendor->address ?: 'Belum ada alamat.' }}</dd></div>
                         <div class="grid gap-1 px-5 py-4 sm:grid-cols-[150px_1fr]"><dt class="text-[#756861]">Telepon</dt><dd>{{ $vendor->phone ?: '—' }}</dd></div>
-                        <div class="grid gap-1 px-5 py-4 sm:grid-cols-[150px_1fr]"><dt class="text-[#756861]">Instagram</dt><dd>{{ $vendor->instagram ?: '—' }}</dd></div>
+                        <div class="grid gap-1 px-5 py-4 sm:grid-cols-[150px_1fr]"><dt class="text-[#756861]">Sosial media</dt><dd class="space-y-1"><div>Instagram: {{ $vendor->instagram ?: '-' }}</div><div>Facebook: {{ $vendor->facebook ?: '-' }}</div><div>X (Twitter): {{ $vendor->{'x_(twitter)'} ?: '-' }}</div></dd></div>
                     </dl>
                 </article>
 
@@ -54,17 +54,24 @@
             @endif
 
             @if ($vendor->status === 'pending')
-                <section class="mt-8 flex flex-col gap-4 border-t border-[#eadfd6] pt-6 sm:flex-row sm:items-end sm:justify-between" aria-label="Tindakan vendor">
-                    <form method="POST" action="{{ route('admin.vendors.reject', $vendor) }}" class="flex w-full flex-col gap-3 sm:max-w-md">
-                        @csrf
-                        <label for="rejection_reason" class="text-sm font-semibold">Alasan penolakan <span class="font-normal text-[#756861]">(opsional)</span></label>
-                        <textarea id="rejection_reason" name="rejection_reason" rows="2" class="w-full rounded-[5px] border border-[#eadfd6] bg-white px-4 py-3 text-sm focus:border-[#f4511e] focus:ring-0" placeholder="Tulis alasan untuk vendor"></textarea>
-                        <button type="submit" class="min-h-11 rounded-[5px] border border-[#b33d38] px-5 text-sm font-bold text-[#b33d38] hover:bg-[#fbe8e6]">Reject vendor</button>
-                    </form>
-                    <form method="POST" action="{{ route('admin.vendors.approve', $vendor) }}">
-                        @csrf
-                        <button type="submit" class="min-h-11 rounded-[5px] bg-[#f4511e] px-6 text-sm font-bold text-[#fff9f3] hover:bg-[#d94216]">Approve vendor</button>
-                    </form>
+                <section class="mt-8 border border-[#eadfd6] bg-white p-5 sm:p-6" aria-label="Tindakan vendor">
+                    <div class="mb-5 flex flex-col gap-1 border-b border-[#eadfd6] pb-4"><p class="font-mono text-[10px] font-semibold uppercase tracking-[.16em] text-[#f4511e]">Keputusan review</p><h2 class="font-['Outfit'] text-2xl font-bold">Tentukan status vendor</h2><p class="text-sm text-[#756861]">Periksa data di atas sebelum memberikan keputusan.</p></div>
+                    <div class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_280px] lg:items-end">
+                        <form method="POST" action="{{ route('admin.vendors.reject', $vendor) }}" class="space-y-3">
+                            @csrf
+                            <label for="rejection_reason" class="block text-sm font-semibold">Alasan penolakan * <span class="font-normal text-[#756861]">(wajib)</span></label>
+                            <textarea id="rejection_reason" name="rejection_reason" rows="3" required minlength="10" maxlength="500" class="w-full rounded-[5px] border border-[#eadfd6] bg-[#fff9f3] px-4 py-3 text-sm focus:border-[#f4511e] focus:ring-0" placeholder="Tulis alasan penolakan (minimal 10 karakter)">{{ old('rejection_reason') }}</textarea>
+                            @error('rejection_reason')
+                                <p class="text-sm text-[#b33d38]">{{ $message }}</p>
+                            @enderror
+                            <button type="submit" class="min-h-11 w-full rounded-[5px] border border-[#b33d38] px-5 text-sm font-bold text-[#b33d38] transition-colors hover:bg-[#fbe8e6]">Reject vendor</button>
+                        </form>
+                        <form method="POST" action="{{ route('admin.vendors.approve', $vendor) }}" class="flex h-full flex-col justify-end gap-3 border-t border-[#eadfd6] pt-5 lg:border-l lg:border-t-0 lg:pl-6 lg:pt-0">
+                            @csrf
+                            <p class="text-sm leading-6 text-[#756861]">Setujui vendor jika profil sudah lengkap dan sesuai.</p>
+                            <button type="submit" class="min-h-11 w-full rounded-[5px] bg-[#f4511e] px-6 text-sm font-bold text-[#fff9f3] transition-colors hover:bg-[#d94216]">Approve vendor</button>
+                        </form>
+                    </div>
                 </section>
             @endif
 
