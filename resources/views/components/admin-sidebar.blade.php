@@ -5,7 +5,7 @@
     }
 </style>
 <aside class="admin-shell-sidebar w-screen shrink-0 overflow-y-auto bg-[#a9361f] text-[#fff9f3] lg:fixed lg:inset-y-0 lg:left-0 lg:z-20 lg:flex lg:h-[100dvh] lg:w-[248px]">
-    <div class="flex h-full flex-col px-5 py-5 lg:px-6 lg:py-7">
+    <div class="flex h-full flex-col px-5 py-5 lg:px-6 lg:pb-0 lg:pt-7">
         <input id="admin-nav-toggle" type="checkbox" class="peer sr-only">
         <div class="flex items-center justify-between gap-3 pb-2 lg:border-b lg:border-[#d16b54]/50 lg:pb-6">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3" aria-label="Admin Event Organizer, beranda">
@@ -16,7 +16,7 @@
                 <svg aria-hidden="true" viewBox="0 0 24 24" class="h-8 w-8 fill-none stroke-current" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
             </label>
         </div>
-        <div class="hidden peer-checked:block lg:block">
+        <div class="hidden peer-checked:flex peer-checked:flex-col lg:flex lg:flex-1 lg:flex-col">
             <nav class="mt-7" aria-label="Navigasi admin">
                 <p class="mb-3 px-3 font-mono text-[10px] font-semibold uppercase tracking-[.18em] text-[#f3b09e]">Workspace</p>
                 <div class="space-y-1">
@@ -27,9 +27,10 @@
                     <a href="#categories" class="flex min-h-11 items-center gap-3 rounded-[5px] px-3 text-sm font-medium text-[#f7d5cc] hover:bg-[#8e2e1b] hover:text-[#fff9f3]"><svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.8"><path d="m12 4 7 4-7 4-7-4 7-4Zm-7 8 7 4 7-4M5 16l7 4 7-4"/></svg><span>Kategori</span></a>
                 </div>
             </nav>
-            <div class="mt-8 border-t border-[#d16b54]/50 pt-5">
-                <div class="flex items-center gap-3"><span class="grid h-9 w-9 place-items-center rounded-full bg-[#f3b09e] font-['Outfit'] text-sm font-bold text-[#762817]">RA</span><div><p class="text-sm font-semibold">Rania Adhisti</p><p class="text-xs text-[#f3b09e]">Platform admin</p></div></div>
-                <form method="POST" action="{{ route('logout') }}" class="mt-4">@csrf<button type="submit" class="flex min-h-11 w-full items-center gap-3 rounded-[5px] px-3 text-sm font-semibold text-[#f7d5cc] hover:bg-[#8e2e1b] hover:text-[#fff9f3]"><svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.8"><path d="M10 5H5v14h5M14 8l4 4-4 4m4-4H9"/></svg>Keluar</button></form>
+            @php($admin = auth()->user())
+            <div class="mt-auto border-t border-[#d16b54]/50 pt-5">
+                <div class="flex items-center gap-3"><span class="grid h-9 w-9 place-items-center rounded-full bg-[#f3b09e] font-['Outfit'] text-sm font-bold text-[#762817]">{{ strtoupper(substr($admin?->name ?? 'Admin', 0, 2)) }}</span><div class="min-w-0"><p class="truncate text-sm font-semibold">{{ $admin?->name ?? 'Admin' }}</p><p class="text-xs text-[#f3b09e]">{{ ucfirst($admin?->role ?? 'admin') }}</p></div></div>
+                <form method="POST" action="{{ route('admin.logout') }}" class="mt-4">@csrf<button type="submit" class="flex min-h-11 w-full items-center gap-3 rounded-[5px] px-3 text-sm font-semibold text-[#f7d5cc] hover:bg-[#8e2e1b] hover:text-[#fff9f3]"><svg aria-hidden="true" viewBox="0 0 24 24" class="h-5 w-5 fill-none stroke-current" stroke-width="1.8"><path d="M10 5H5v14h5M14 8l4 4-4 4m4-4H9"/></svg>Keluar</button></form>
             </div>
         </div>
     </div>
