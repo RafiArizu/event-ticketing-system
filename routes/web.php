@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminLoginController;
+use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Customer\CustomerLoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,8 +40,6 @@ Route::view('/admin/dashboard', 'admin.dashboard.index')->name('admin.dashboard'
 
 Route::view('/admin/events', 'admin.events.index')->name('admin.events');
 
-Route::view('/admin/vendors', 'admin.vendors.index')->name('admin.vendors');
-
 Route::get('/admin/bookings', function (\Illuminate\Http\Request $request) {
         $bookings = [
             ['code' => 'BK-2609028', 'buyer' => 'Nadya Prameswari', 'email' => 'nadya.prameswari@mail.id', 'event' => 'Otaku Matsuri 2026', 'tickets' => 2, 'total' => 'Rp680.000', 'payment' => 'Paid', 'status' => 'Confirmed', 'booked_at' => '02 Sep 2026, 14:32'],
@@ -73,7 +72,8 @@ Route::get('/admin/bookings', function (\Illuminate\Http\Request $request) {
 
 
 
-Route::middleware('guest')->group(function () {
+
+    Route::middleware('guest')->group(function () {
     // Route::get('register', [RegisteredUserController::class, 'create'])
     //     ->name('register');
 
@@ -152,32 +152,9 @@ Route::get('/admin/events/{event}', function (string $event) {
         return view('admin.events.show', ['event' => $events[$event]]);
 })->name('admin.events.show');
 
-Route::get('/admin/vendors/{vendor}', function (string $vendor) {
-        $vendors = [
-            'neko-neko-studio' => [
-                'initials' => 'NN', 'name' => 'Neko Neko Studio', 'type' => 'Event & creative studio',
-                'email' => 'hello@nekoneko.id', 'phone' => '+62 812 7340 1182',
-                'address' => 'Jl. Kemang Raya 18, Jakarta Selatan', 'submitted' => '02 September 2026, 09:14 WIB',
-                'description' => 'Studio kreatif untuk event komunitas anime, ilustrasi, dan pop culture lokal.',
-            ],
-            'kitsune-market' => [
-                'initials' => 'KM', 'name' => 'Kitsune Market', 'type' => 'Pop-up market organizer',
-                'email' => 'halo@kitsunemarket.id', 'phone' => '+62 813 2241 7096',
-                'address' => 'Jl. Cempaka Putih 7, Jakarta Pusat', 'submitted' => '02 September 2026, 06:14 WIB',
-                'description' => 'Penyelenggara pop-up market untuk kreator, kolektor, dan komunitas anime.',
-            ],
-            'yoru-stageworks' => [
-                'initials' => 'YS', 'name' => 'Yoru Stageworks', 'type' => 'Stage and performance',
-                'email' => 'admin@yorustage.id', 'phone' => '+62 857 9012 4460',
-                'address' => 'Jl. Braga 21, Bandung', 'submitted' => '01 September 2026, 16:42 WIB',
-                'description' => 'Tim produksi pertunjukan panggung dan acara komunitas pop culture.',
-            ],
-        ];
 
-        abort_unless(isset($vendors[$vendor]), 404);
-
-        return view('dashb.vendor.show', ['vendor' => $vendors[$vendor]]);
-})->name('admin.vendors.show');
+Route::get('/admin/vendors', [VendorController::class, 'index'])
+    ->name('admin.vendors');
 
 
 // ------ Routes Customer -------    
