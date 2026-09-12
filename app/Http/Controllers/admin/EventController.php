@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Vendor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class EventController
@@ -44,6 +45,7 @@ class EventController
     {
         $data = $this->validated($request);
         $data['slug'] = $this->uniqueSlug($data['title']);
+        $data['poster'] = $request->file('poster')->store('posters', 'public');
         Event::create($data);
 
         return redirect()->route('admin.events')->with('status', 'Event berhasil dibuat.');
@@ -64,6 +66,12 @@ class EventController
         $data['slug'] = $event->title === $data['title']
             ? $event->slug
             : $this->uniqueSlug($data['title'], $event);
+        if ($request->hasFile('poster')) {
+            Storage::disk('public')->delete($event->poster);
+            $data['poster'] = $request->file('poster')->store('posters', 'public');
+        } else {
+            unset($data['poster']);
+        }
         $event->update($data);
 
         return redirect()->route('admin.events.show', $event)->with('status', 'Event berhasil diperbarui.');
@@ -83,7 +91,7 @@ class EventController
             'category_id' => ['required', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:150'],
             'description' => ['required', 'string', 'max:5000'],
-            'poster' => ['required', 'string', 'max:255'],
+            'poster' => [$request->routeIs('admin.events.store') ? 'required' : 'nullable', 'image', 'mimes:jpg,jpeg,png', 'max:5120'],
             'venue_name' => ['required', 'string', 'max:150'],
             'venue_address' => ['required', 'string', 'max:500'],
             'event_date' => ['required', 'date'],
