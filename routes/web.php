@@ -46,9 +46,29 @@ Route::get('/admin/events', [EventController::class, 'index'])
     ->middleware(['auth', 'role:admin'])
     ->name('admin.events');
 
+Route::get('/admin/events/create', [EventController::class, 'create'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.events.create');
+
+Route::post('/admin/events', [EventController::class, 'store'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.events.store');
+
 Route::get('/admin/events/{event}', [EventController::class, 'show'])
     ->middleware(['auth', 'role:admin'])
     ->name('admin.events.show');
+
+Route::get('/admin/events/{event}/edit', [EventController::class, 'edit'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.events.edit');
+
+Route::put('/admin/events/{event}', [EventController::class, 'update'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.events.update');
+
+Route::delete('/admin/events/{event}', [EventController::class, 'destroy'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('admin.events.destroy');
 
 Route::view('/admin/categories', 'admin.categories.index')
     ->name('admin.categories.index');
