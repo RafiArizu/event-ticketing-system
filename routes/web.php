@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminLoginController;
 use App\Http\Controllers\Admin\VendorController;
 use App\Http\Controllers\Admin\EventController;
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Customer\CustomerLoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -48,6 +49,10 @@ Route::get('/admin/events', [EventController::class, 'index'])
 Route::get('/admin/events/{event}', [EventController::class, 'show'])
     ->middleware(['auth', 'role:admin'])
     ->name('admin.events.show');
+
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('categories', CategoryController::class);
+});
 
 Route::get('/admin/vendors', [VendorController::class, 'index'])
     ->name('admin.vendors');
