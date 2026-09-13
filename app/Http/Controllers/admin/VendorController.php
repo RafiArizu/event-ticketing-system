@@ -77,8 +77,11 @@ class VendorController
         $vendors = $query
             ->latest()
             ->get();
-        $pendingCount = Vendor::where('status', 'pending')->count();
+        $statusCounts = Vendor::query()
+            ->selectRaw('status, COUNT(*) as total')
+            ->groupBy('status')
+            ->pluck('total', 'status');
 
-        return view('admin.vendors.index', compact('vendors', 'pendingCount', 'search', 'status'));
+        return view('admin.vendors.index', compact('vendors', 'statusCounts', 'search', 'status'));
     }
 }

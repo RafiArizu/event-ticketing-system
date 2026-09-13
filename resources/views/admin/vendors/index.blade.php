@@ -23,11 +23,26 @@
                         <h1 class="mt-2 font-['Outfit'] text-4xl font-extrabold tracking-[-.055em] sm:text-5xl">Verifikasi vendor</h1>
                         <p class="mt-3 max-w-[65ch] text-sm leading-6 text-[#756861]">Tinjau pengajuan organisasi sebelum akses vendor dibuka.</p>
                     </div>
-                    <div class="flex items-baseline gap-2 border-l-2 border-[#f4511e] pl-4"><span class="font-['Outfit'] text-3xl font-extrabold">{{ $pendingCount }}</span><span class="text-sm text-[#756861]">menunggu tinjauan</span></div>
+                    {{--
+                    <div class="flex items-baseline gap-2 border-l-2 border-[#f4511e] pl-4"><span class="font-['Outfit'] text-3xl font-extrabold">{{ $statusCounts->get('pending', 0) }}</span><span class="text-sm text-[#756861]">menunggu tinjauan</span></div>
+                    --}}
                 </div>
             </header>
 
-            <section class="py-7" aria-label="Filter vendor">
+            <section class="grid gap-3 py-7 sm:grid-cols-3" aria-label="Ringkasan status vendor">
+                @foreach([
+                    ['Pending', $statusCounts->get('pending', 0), 'text-[#956400]'],
+                    ['Approved', $statusCounts->get('approved', 0), 'text-[#287a54]'],
+                    ['Rejected', $statusCounts->get('rejected', 0), 'text-[#b33d38]'],
+                ] as $metric)
+                    <div class="flex min-h-20 items-center justify-between border-y border-[#eadfd6] bg-white px-5 py-3">
+                        <span class="text-xs uppercase tracking-[.12em] text-[#756861]">{{ $metric[0] }}</span>
+                        <strong class="font-['Outfit'] text-3xl font-bold {{ $metric[2] }}">{{ $metric[1] }}</strong>
+                    </div>
+                @endforeach
+            </section>
+
+            <section class="pb-7" aria-label="Filter vendor">
                 <form class="grid gap-3 md:grid-cols-[minmax(0,1fr)_180px_auto]" method="GET" action="{{ route('admin.vendors') }}">
                     <label class="sr-only" for="vendor-search">Cari vendor</label>
                     <div class="relative"><svg aria-hidden="true" viewBox="0 0 24 24" class="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 fill-none stroke-[#756861]" stroke-width="1.8"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg><input id="vendor-search" name="q" type="search" placeholder="Cari nama organisasi atau email" class="min-h-12 w-full rounded-[5px] border border-[#eadfd6] bg-white pl-12 pr-4 text-sm text-[#2c221e] placeholder:text-[#9f8f87] focus:border-[#f4511e] focus:ring-0"></div>
